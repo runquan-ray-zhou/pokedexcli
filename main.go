@@ -1,20 +1,18 @@
 package main
 
-import (
-	"fmt"
-	"log"
+import "github.com/runquan-ray-zhou/pokedexcli/internal/pokeapi"
 
-	"github.com/runquan-ray-zhou/pokedexcli/internal/pokeapi"
-)
+type config struct {
+	pokeapiClient       pokeapi.Client
+	nextLocationAreaURL *string
+	prevLocationAreaURL *string
+}
 
 func main() {
-	pokeapiClient := pokeapi.NewClient()
-
-	resp, err := pokeapiClient.ListLocationAreas()
-	if err != nil {
-		log.Fatal(err)
+	cfg := config{
+		pokeapiClient: pokeapi.NewClient(),
 	}
-	fmt.Println(resp)
-	// startRepl()
+
+	startRepl(&cfg)
 
 }
