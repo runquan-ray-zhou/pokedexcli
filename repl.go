@@ -11,7 +11,6 @@ func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-
 		fmt.Print(" >")
 		scanner.Scan()
 		text := scanner.Text()
@@ -21,10 +20,41 @@ func startRepl() {
 			continue
 		}
 
-		fmt.Println("echoing: ", cleaned)
+		commandName := cleaned[0]
+
+		availableCommands := getCommands()
+
+		command, ok := availableCommands[commandName]
+
+		if !ok {
+			fmt.Println("invalid command")
+			continue
+		}
+		command.callback()
+
 	}
 }
 
+type cliCommand struct {
+	name        string
+	description string
+	callback    func() error
+}
+
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand{
+		"help": {
+			name:        "help",
+			description: "Prints the help menu",
+			callback:    callbackHelp,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Turns off the Pokedex",
+			callback:    callbackExit,
+		},
+	}
+}
 func cleanInput(str string) []string { // parse the input string and clean it up and return all the tokens in the string
 	lowered := strings.ToLower(str)
 	words := strings.Fields(lowered)
