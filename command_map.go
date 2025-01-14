@@ -8,7 +8,7 @@ import (
 func callbackMap(cfg *config) error {
 	// pokeapiClient := pokeapi.NewClient()
 
-	resp, err := cfg.pokeapiClient.ListLocationAreas()
+	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.nextLocationAreaURL)
 	if err != nil {
 		log.Fatal(err)
 	}
